@@ -1,13 +1,13 @@
 #include <iostream>
 #include <chrono>
 #include <random>
-#include "functions.cpp"
-#include "gnuplot-iostream.h"
+#include <fstream>
+#include "daxpy.cpp"
 
 
 int main () {
 
-    int ntrials = 10; 
+    int ntrials = 100; 
     int n = 1;
     double lower_bound = 0.0;   // Lower bound of random double numbers
     double upper_bound = 1.0;   // Upper bound of random double numbers
@@ -45,6 +45,16 @@ int main () {
         flops[i-1] = operations/average_duration.count();
         std::cout << "Average time taken for n="<<n<<" :"<< flops[i-1]<< " nanoseconds" << std::endl;
     }
+
+    std::ofstream myfile ("example1.txt");
+    if (myfile.is_open())
+    {
+        for(int count = 0; count < 512; count ++){
+            myfile << flops[count] << "\n" ;
+        }
+        myfile.close();
+    }
+    else std::cout << "Unable to open file";
     
     return 0;
 }
