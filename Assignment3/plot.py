@@ -63,3 +63,15 @@ fig.suptitle("GEMM_jki (FLOAT)")
 fig.tight_layout()
 fig.savefig("jki_float.png")
 # %%
+
+fig,axes = plt.subplots(1,1)
+data = np.loadtxt("strassen.txt")
+axes.plot(np.arange(0,511,2),data*1000)
+axes.set_ylabel("MFLOPS")
+axes.set_xlabel("n")
+axes.legend()
+fig.suptitle("strassen_mm")
+fig.tight_layout()
+fig.savefig("strassen_mm.png")
+
+# %%
