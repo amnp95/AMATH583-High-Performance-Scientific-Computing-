@@ -29,14 +29,34 @@ public:
 
     Matrix<T> operator*(const Matrix<T> &other) const
     {
-        // write your code
+        if (num_cols != other.numRows()) {
+            throw std::runtime_error("Dimensions are not compatible\n");
+        }
+        int m = num_rows;
+        int n = other.numCols();
+        Matrix<T> C(m, n);
+        for (int i=0; i<m; i++ ) {
+            for (int j=0; j<n; j++) {
+                C(i,j) = 0;
+                for (int k=0; k<num_cols; k++) {
+                    C(i,j) = C(i,j) + this->operator()(i,k) * other(k,j);
+                }
+            }
+        }
+        return C;
     }
 
     Matrix<T> operator+(const Matrix<T> &other) const;
 
     Matrix<T> transpose() const
     {
-        // write your code
+        Matrix <T> C(num_cols, num_rows);
+        for (int i=0; i< num_rows; i++) {
+            for (int j=0; j<num_cols; j++) {
+                C(j,i) = this->operator()(i,j);
+            }
+        }
+        return C;
     }
 
     int numRows() const
@@ -53,6 +73,14 @@ public:
     {
         T norm = 0;
         // write your code
+        for (int i=0; i<num_rows; i++) {
+            T sum= 0;
+            for (int j=0; j< num_cols; j++) {
+                sum += std::abs(this->operator()(i,j));
+            }
+            if (sum > norm) 
+                norm = sum;
+        }
         return norm;
     }
 
@@ -66,7 +94,14 @@ template <typename T>
 Matrix<T> Matrix<T>::operator+(const Matrix<T> &other) const
 {
     Matrix<T> result(num_rows, num_cols);
-    // write your code
+    if (num_cols != other.numCols() || num_rows != other.numRows()) {
+        throw std::runtime_error("Dimensions are not compatible\n");
+    }
+    for (int i=0; i<num_rows; i++) {
+        for (int j=0; j<num_cols; j++) {
+            result(i,j) = this->operator()(i,j) + other(i,j);
+        }
+    }
     return result;
 }
 
